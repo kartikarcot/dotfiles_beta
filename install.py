@@ -35,9 +35,9 @@ tasks = {
     '~/.screenrc' : 'screenrc',
 
     # VIM
-    '~/.vimrc' : 'vim/vimrc',
-    '~/.vim' : 'vim',
-    '~/.vim/autoload/plug.vim' : 'vim/bundle/vim-plug/plug.vim',
+    # '~/.vimrc' : 'vim/vimrc',
+    # '~/.vim' : 'vim',
+    # '~/.vim/autoload/plug.vim' : 'vim/bundle/vim-plug/plug.vim',
 
     # NeoVIM
     '~/.config/nvim' : 'nvim',
@@ -63,30 +63,30 @@ tasks = {
     '~/.local/bin/fzf' : '~/.fzf/bin/fzf', # fzf is at $HOME/.fzf
 
     # X
-    '~/.Xmodmap' : 'Xmodmap',
+    # '~/.Xmodmap' : 'Xmodmap',
 
     # GTK
-    '~/.gtkrc-2.0' : 'gtkrc-2.0',
+    # '~/.gtkrc-2.0' : 'gtkrc-2.0',
 
     # kitty
-    '~/.config/kitty/kitty.conf': 'config/kitty/kitty.conf',
+    # '~/.config/kitty/kitty.conf': 'config/kitty/kitty.conf',
 
     # tmux
     '~/.tmux'      : 'tmux',
     '~/.tmux.conf' : 'tmux/tmux.conf',
 
     # .config (XDG-style)
-    '~/.config/terminator' : 'config/terminator',
-    '~/.config/pudb/pudb.cfg' : 'config/pudb/pudb.cfg',
-    '~/.config/fsh/wook.ini' : 'config/fsh/wook.ini',
+    # '~/.config/terminator' : 'config/terminator',
+    # '~/.config/pudb/pudb.cfg' : 'config/pudb/pudb.cfg',
+    # '~/.config/fsh/wook.ini' : 'config/fsh/wook.ini',
 
     # pip and python
     #'~/.pip/pip.conf' : 'pip/pip.conf',
-    '~/.pythonrc.py' : 'python/pythonrc.py',
-    '~/.pylintrc' : 'python/pylintrc',
-    '~/.condarc' : 'python/condarc',
-    '~/.config/pycodestyle' : 'python/pycodestyle',
-    '~/.ptpython/config.py' : 'python/ptpython.config.py',
+    # '~/.pythonrc.py' : 'python/pythonrc.py',
+    # '~/.pylintrc' : 'python/pylintrc',
+    # '~/.condarc' : 'python/condarc',
+    # '~/.config/pycodestyle' : 'python/pycodestyle',
+    # '~/.ptpython/config.py' : 'python/ptpython.config.py',
 }
 
 
@@ -106,28 +106,26 @@ post_actions += [
     for f in ~/.vim ~/.zsh ~/.vimrc ~/.zshrc; do
         if ! readlink $f >/dev/null; then
             echo -e "\033[0;31m\
-WARNING: $f is not a symbolic link to ~/.dotfiles.
-Please remove your local folder/file $f and try again.\033[0m"
-            echo -n "(Press any key to continue) "; read user_confirm
-            exit 1;
-        else
-            echo "$f --> $(readlink $f)"
+WARNING: $f is not a symbolic link to ~/.dotfiles. Moving the old file with suffix _disabled"
+            mv $f $f_disabled
         fi
+        # create symlink
+        echo "$f --> $(readlink $f)"
     done
 ''']
 
-post_actions += [
-    '''#!/bin/bash
-    # Download command line scripts
-    mkdir -p "$HOME/.local/bin/"
-    _download() {
-        curl -L "$2" > "$1" && chmod +x "$1"
-    }
-    ret=0
-    set -v
-    _download "$HOME/.local/bin/video2gif" "https://raw.githubusercontent.com/wookayin/video2gif/master/video2gif" || ret=1
-    exit $ret;
-''']
+# post_actions += [
+#     '''#!/bin/bash
+#     # Download command line scripts
+#     mkdir -p "$HOME/.local/bin/"
+#     _download() {
+#         curl -L "$2" > "$1" && chmod +x "$1"
+#     }
+#     ret=0
+#     set -v
+#     _download "$HOME/.local/bin/video2gif" "https://raw.githubusercontent.com/wookayin/video2gif/master/video2gif" || ret=1
+#     exit $ret;
+# ''']
 
 post_actions += [
     '''#!/bin/bash
@@ -177,7 +175,8 @@ post_actions += [
         echo -en "\033[0;33m"
         echo -e "$(tmux -V) is too old. Contact system administrator, or:"
         echo -e "  $ dotfiles install tmux  \033[0m (installs to ~/.local/, if you don't have sudo)"
-        exit 1;
+        read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+        dotfiles install tmux
     else
         echo "$(which tmux): $(tmux -V)"
     fi
@@ -204,8 +203,11 @@ post_actions += [
 post_actions += [
     r'''#!/bin/bash
     # Change default shell to zsh
-    /bin/zsh --version >/dev/null || (\
-        echo -e "\033[0;31mError: /bin/zsh not found. Please install zsh.\033[0m"; exit 1)
+    if ! type "zsh" > /dev/null; then
+        echo -e "\033[0;31mError: /bin/zsh not found. Please install zsh.\033[0m";
+        read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+        dotfiles install zsh
+    fi
     if [[ ! "$SHELL" = *zsh ]]; then
         echo -e '\033[0;33mPlease type your password if you wish to change the default shell to ZSH\e[m'
         chsh -s /bin/zsh && echo -e 'Successfully changed the default shell, please re-login'
