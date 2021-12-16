@@ -151,11 +151,22 @@ def install_local(target, force, argv=[]):
           WHITE("`exec zsh`") + \
           GREEN(" to reflect changes in PATH."))
 
+def unlink():
+    os.system("mv ~/.dotfiles ~/.dotfiles_unlinked")
+    os.system("cd ~ && symlink -d ./")
+    os.system("mv ~/old_files/* ~/")
+
+def link():
+    os.system("mv ~/.dotfiles_unlinked ~/.dotfiles")
+    update()
+
 def main():
     COMMANDS = {
         'update': update,
         'github': open_github,
         'install' : install_local,
+        'unlink' : unlink,
+        'link' : link
     }
     for fn in COMMANDS.values():
         fn.__doc__ = fn.__doc__.strip()
