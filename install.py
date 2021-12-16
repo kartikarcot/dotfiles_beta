@@ -83,24 +83,17 @@ WARNING: $f is not a symbolic link to ~/.dotfiles. Moving the old file with suff
     done
 ''']
 
-# post_actions += [
-#     '''#!/bin/bash
-#     # Download command line scripts
-#     mkdir -p "$HOME/.local/bin/"
-#     _download() {
-#         curl -L "$2" > "$1" && chmod +x "$1"
-#     }
-#     ret=0
-#     set -v
-#     _download "$HOME/.local/bin/video2gif" "https://raw.githubusercontent.com/wookayin/video2gif/master/video2gif" || ret=1
-#     exit $ret;
-# ''']
-
 post_actions += [
     '''#!/bin/bash
     # validate neovim package installation on python2/3 and automatically install if missing
     bash "etc/install-neovim-py.sh"
 ''']
+
+post_actions += [
+    '''#!/bin/bash
+    # ensure we have powerline
+    bash "etc/install-powerline.sh"
+    ''']
 
 if find_executable('vim'):
     post_actions += [

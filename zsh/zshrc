@@ -140,4 +140,12 @@ function cdd() {
     done
 }
 
+host_python3=""
+[[ -z "$host_python3" ]] && [[ -f "/usr/local/bin/python3" ]] && host_python3="/usr/local/bin/python3"
+[[ -z "$host_python3" ]] && [[ -f "/usr/bin/python3" ]]       && host_python3="/usr/bin/python3"
+[[ -z "$host_python3" ]] && host_python3="$(which python3)"
+file_location=$($host_python3 -c 'import powerline; print(powerline.__file__)')
+tmux_bin_location="$(dirname $file_location)/bindings/tmux"
+export TMUX_POWERLINE_BIN=$tmux_bin_location
+
 source ~/.bash_aliases
