@@ -32,7 +32,6 @@ args = parser.parse_args()
 tasks = {
     # SHELLS
     '~/.bashrc' : 'bashrc',
-    '~/.screenrc' : 'screenrc',
 
     # VIM
     '~/.vimrc' : 'vim/vimrc',
@@ -42,51 +41,17 @@ tasks = {
     # NeoVIM
     '~/.config/nvim' : 'nvim',
 
-    # GIT
-    '~/.gitconfig' : 'git/gitconfig',
-    '~/.gitignore' : 'git/gitignore',
-
     # ZSH
-    '~/.zgen'     : 'zsh/zgen',
     '~/.zsh'      : 'zsh',
-    '~/.zlogin'   : 'zsh/zlogin',
-    '~/.zlogout'  : 'zsh/zlogout',
-    '~/.zpreztorc': 'zsh/zpreztorc',
-    '~/.zprofile' : 'zsh/zprofile',
-    '~/.zshenv'   : 'zsh/zshenv',
     '~/.zshrc'    : 'zsh/zshrc',
 
     # Bins
     '~/.local/bin/dotfiles' : 'bin/dotfiles',
-    '~/.local/bin/fasd' : 'zsh/fasd/fasd',
-    '~/.local/bin/is_mosh' : 'zsh/is_mosh/is_mosh',
     '~/.local/bin/fzf' : '~/.fzf/bin/fzf', # fzf is at $HOME/.fzf
-
-    # X
-    # '~/.Xmodmap' : 'Xmodmap',
-
-    # GTK
-    # '~/.gtkrc-2.0' : 'gtkrc-2.0',
-
-    # kitty
-    # '~/.config/kitty/kitty.conf': 'config/kitty/kitty.conf',
 
     # tmux
     '~/.tmux'      : 'tmux',
     '~/.tmux.conf' : 'tmux/tmux.conf',
-
-    # .config (XDG-style)
-    # '~/.config/terminator' : 'config/terminator',
-    # '~/.config/pudb/pudb.cfg' : 'config/pudb/pudb.cfg',
-    # '~/.config/fsh/wook.ini' : 'config/fsh/wook.ini',
-
-    # pip and python
-    #'~/.pip/pip.conf' : 'pip/pip.conf',
-    # '~/.pythonrc.py' : 'python/pythonrc.py',
-    # '~/.pylintrc' : 'python/pylintrc',
-    # '~/.condarc' : 'python/condarc',
-    # '~/.config/pycodestyle' : 'python/pycodestyle',
-    # '~/.ptpython/config.py' : 'python/ptpython.config.py',
 }
 
 
@@ -126,26 +91,6 @@ WARNING: $f is not a symbolic link to ~/.dotfiles. Moving the old file with suff
 #     _download "$HOME/.local/bin/video2gif" "https://raw.githubusercontent.com/wookayin/video2gif/master/video2gif" || ret=1
 #     exit $ret;
 # ''']
-
-post_actions += [
-    '''#!/bin/bash
-    # Update zgen modules and cache (the init file)
-    zsh -c "
-        # source zplug and list plugins
-        DOTFILES_UPDATE=1 __p9k_instant_prompt_disabled=1 source ${HOME}/.zshrc
-        if ! which zgen > /dev/null; then
-            echo -e '\033[0;31m\
-ERROR: zgen not found. Double check the submodule exists, and you have a valid ~/.zshrc!\033[0m'
-            ls -alh ~/.zsh/zgen/
-            ls -alh ~/.zshrc
-            exit 1;
-        fi
-        zgen reset
-        zgen update
-    "
-    ''' if not args.skip_zgen else \
-        '# zgen update (Skipped)'
-]
 
 post_actions += [
     '''#!/bin/bash
@@ -214,38 +159,6 @@ post_actions += [
     else
         echo -e "\033[0;32m\$SHELL is already zsh.\033[0m $(zsh --version)"
     fi
-''']
-
-post_actions += [
-    r'''#!/bin/bash
-    # Create ~/.gitconfig.secret file and check user configuration
-    if [ ! -f ~/.gitconfig.secret ]; then
-        cat > ~/.gitconfig.secret <<EOL
-# vim: set ft=gitconfig:
-EOL
-    fi
-    if ! git config --file ~/.gitconfig.secret user.name 2>&1 > /dev/null || \
-       ! git config --file ~/.gitconfig.secret user.email 2>&1 > /dev/null; then echo -ne '
-    \033[1;33m[!!!] Please configure git user name and email:
-        git config --file ~/.gitconfig.secret user.name "(YOUR NAME)"
-        git config --file ~/.gitconfig.secret user.email "(YOUR EMAIL)"
-\033[0m'
-        echo -en '\n'
-        echo -en "(git config user.name) \033[0;33m Please input your name  : \033[0m"; read git_username
-        echo -en "(git config user.email)\033[0;33m Please input your email : \033[0m"; read git_useremail
-        if [[ -n "$git_username" ]] && [[ -n "$git_useremail" ]]; then
-            git config --file ~/.gitconfig.secret user.name "$git_username"
-            git config --file ~/.gitconfig.secret user.email "$git_useremail"
-        else
-            exit 1;   # error
-        fi
-    fi
-
-    # get the current config
-    echo -en '\033[0;32m';
-    echo -en 'user.name  : '; git config --file ~/.gitconfig.secret user.name
-    echo -en 'user.email : '; git config --file ~/.gitconfig.secret user.email
-    echo -en '\033[0m';
 ''']
 
 ################# END OF FIXME #################
