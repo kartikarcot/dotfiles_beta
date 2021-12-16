@@ -181,7 +181,7 @@ post_actions += [
 post_actions += [
     r'''#!/bin/bash
     # install oh-my-zsh
-    if [ ! -L "$HOME/.dotfiles/ohmyzsh/oh-my-zsh.sh" ]; then
+    if [ ! -f "$HOME/.dotfiles/ohmyzsh/oh-my-zsh.sh" ]; then
         echo -e "\033[0;31mError: oh-my-zsh not found. Please install oh-my-zsh.\033[0m";
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
         ZSH="$HOME/.dotfiles/zsh/oh-my-zsh"
