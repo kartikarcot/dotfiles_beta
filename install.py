@@ -194,6 +194,9 @@ post_actions += [
     if [ ! -L "$HOME/.oh-my-zsh/plugins/fzf-tab" ]; then
         ln -s "$HOME/.dotfiles/zsh/fzf-tab" "$HOME/.oh-my-zsh/plugins/fzf-tab"
     fi
+    if [! -L "$HOME/.oh-my-zsh/themes/powerlevel10k" ]; then
+        ln -s "$HOME/.dotfiles/zsh/powerlevel10k" "$HOME/.oh-my-zsh/themes/powerlevel10k"
+    fi
 ''']
 
 ################# END OF FIXME #################
