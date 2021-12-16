@@ -35,9 +35,9 @@ tasks = {
     '~/.screenrc' : 'screenrc',
 
     # VIM
-    # '~/.vimrc' : 'vim/vimrc',
-    # '~/.vim' : 'vim',
-    # '~/.vim/autoload/plug.vim' : 'vim/bundle/vim-plug/plug.vim',
+    '~/.vimrc' : 'vim/vimrc',
+    '~/.vim' : 'vim',
+    '~/.vim/autoload/plug.vim' : 'vim/bundle/vim-plug/plug.vim',
 
     # NeoVIM
     '~/.config/nvim' : 'nvim',
@@ -176,7 +176,7 @@ post_actions += [
         echo -e "$(tmux -V) is too old. Contact system administrator, or:"
         echo -e "  $ dotfiles install tmux  \033[0m (installs to ~/.local/, if you don't have sudo)"
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-        dotfiles install tmux
+        ./bin/dotfiles install tmux
     else
         echo "$(which tmux): $(tmux -V)"
     fi
@@ -206,7 +206,7 @@ post_actions += [
     if ! type "zsh" > /dev/null; then
         echo -e "\033[0;31mError: /bin/zsh not found. Please install zsh.\033[0m";
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-        dotfiles install zsh
+        ./bin/dotfiles install zsh
     fi
     if [[ ! "$SHELL" = *zsh ]]; then
         echo -e '\033[0;33mPlease type your password if you wish to change the default shell to ZSH\e[m'
