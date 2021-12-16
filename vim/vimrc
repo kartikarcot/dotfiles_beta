@@ -34,7 +34,7 @@ call plug#begin()
 	Plug 'cespare/vim-toml'
 call plug#end()
 " Use <TAB> to select the popup menu:
-source ~/dotfiles/nvim/cscope.vim
+source ~/.dotfiles/nvim/cscope.vim
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 set clipboard=unnamedplus

@@ -34,7 +34,7 @@ if which nvim >/dev/null && _version_check "$(nvim --version | head -n1 | cut -d
             echo -e "${YELLOW}  $neovim_install_cmd${RESET}";
             suggest_cmds+=("$neovim_install_cmd")
         else  # check neovim is up-to-date
-			sleep(1) # cant make too many requests to pypi immediately
+			sleep 1 # cant make too many requests to pypi immediately
             neovim_latest=$(python2 -c 'from xmlrpclib import ServerProxy; print(\
                 ServerProxy("http://pypi.python.org/pypi").package_releases("pynvim")[0])')
             if [[ "$neovim_ver" != "$neovim_latest" ]]; then
