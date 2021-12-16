@@ -52,12 +52,10 @@ tasks = {
 
     # Bins
     '~/.local/bin/dotfiles' : 'bin/dotfiles',
-    '~/.local/bin/fzf' : '~/.fzf/bin/fzf', # fzf is at $HOME/.fzf
 
     # tmux
     '~/.tmux'      : 'tmux',
     '~/.tmux.conf' : 'tmux/tmux.conf',
-    
 }
 
 
