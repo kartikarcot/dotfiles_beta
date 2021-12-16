@@ -181,17 +181,17 @@ post_actions += [
 post_actions += [
     r'''#!/bin/bash
     # install oh-my-zsh
-    if [ ! -f "$HOME/.dotfiles/ohmyzsh/oh-my-zsh.sh" ]; then
+    if [ ! -L "$HOME/.dotfiles/ohmyzsh/oh-my-zsh.sh" ]; then
         echo -e "\033[0;31mError: oh-my-zsh not found. Please install oh-my-zsh.\033[0m";
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
         ZSH="$HOME/.dotfiles/zsh/oh-my-zsh"
         KEEP_ZSHRC=yes
 	    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
     fi
-    if [ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+    if [ ! -L "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
         ln -s "$HOME/.dotfiles/zsh/oh-my-zsh" "$HOME/.oh-my-zsh"
     fi
-    if [ ! -d "$HOME/.oh-my-zsh/plugins/fzf-tab" ]; then
+    if [ ! -L "$HOME/.oh-my-zsh/plugins/fzf-tab" ]; then
         ln -s "$HOME/.dotfiles/zsh/fzf-tab" "$HOME/.oh-my-zsh/plugins/fzf-tab"
     fi
 ''']
