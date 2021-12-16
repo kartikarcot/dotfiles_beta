@@ -43,6 +43,8 @@ tasks = {
     # ZSH
     '~/.zsh'      : 'zsh',
     '~/.zshrc'    : 'zsh/zshrc',
+    '~/.p10kzsh'    : 'zsh/p10kzsh',
+    '~/.p10k.zsh'    : 'zsh/p10k.zsh',
 
     # Bash
     '~/.bashrc'    : 'bash/bashrc',
