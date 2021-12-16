@@ -181,20 +181,23 @@ post_actions += [
 post_actions += [
     r'''#!/bin/bash
     # install oh-my-zsh
-    if [ ! -f "$HOME/.dotfiles/ohmyzsh/oh-my-zsh.sh" ]; then
+    if [ ! -f "$HOME/.dotfiles/zsh/oh-my-zsh/oh-my-zsh.sh" ]; then
+        echo "\033[0;mCould not find $HOME/.dotfiles/oh-my-zsh/oh-my-zsh.sh\033[0m"
         echo -e "\033[0;31mError: oh-my-zsh not found. Please install oh-my-zsh.\033[0m";
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
         ZSH="$HOME/.dotfiles/zsh/oh-my-zsh"
-        KEEP_ZSHRC=yes
 	    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
     fi
     if [ ! -L "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+        echo "linking folders"
         ln -s "$HOME/.dotfiles/zsh/oh-my-zsh" "$HOME/.oh-my-zsh"
     fi
     if [ ! -L "$HOME/.oh-my-zsh/plugins/fzf-tab" ]; then
+        echo "linking folders"
         ln -s "$HOME/.dotfiles/zsh/fzf-tab" "$HOME/.oh-my-zsh/plugins/fzf-tab"
     fi
-    if [! -L "$HOME/.oh-my-zsh/themes/powerlevel10k" ]; then
+    if [ ! -L "$HOME/.oh-my-zsh/themes/powerlevel10k" ]; then
+        echo "linking folders"
         ln -s "$HOME/.dotfiles/zsh/powerlevel10k" "$HOME/.oh-my-zsh/themes/powerlevel10k"
     fi
 ''']

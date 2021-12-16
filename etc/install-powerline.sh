@@ -16,4 +16,4 @@ if [[ -z "$host_python3" ]]; then
         exit 1;
 fi
 
-install_powerline_command_ret=$("$host_python3 -m pip install --user --upgrade powerline-status")
+$host_python3 -m pip install --user --upgrade powerline-status
