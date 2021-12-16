@@ -186,7 +186,7 @@ post_actions += [
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
         ZSH="$HOME/.dotfiles/zsh/oh-my-zsh"
         KEEP_ZSHRC=yes
-	    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
     fi
     if [ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
         ln -s "$HOME/.dotfiles/zsh/oh-my-zsh" "$HOME/.oh-my-zsh"
