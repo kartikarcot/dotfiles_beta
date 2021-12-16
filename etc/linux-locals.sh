@@ -114,6 +114,12 @@ install_zsh() {
     ~/.local/bin/zsh --version
 }
 
+install_zsh_plugins() {
+
+	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+}
+
 install_node() {
     # Install node.js LTS at ~/.local
     set -e
