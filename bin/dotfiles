@@ -49,7 +49,6 @@ def add_argument(*args, **kwargs):
 ###############################################################################################
 
 @add_argument('--fast', action='store_true', help='Skip all slow updates (zgen, vimplug)')
-@add_argument('--skip-zplug', action='store_true', help='Skip zplug/zgen update')
 @add_argument('--skip-vimplug', action='store_true', help='Skip vim-plug update')
 def update(fast=False,
            skip_zplug=False,
@@ -152,11 +151,20 @@ def install_local(target, force, argv=[]):
           GREEN(" to reflect changes in PATH."))
 
 def unlink():
+    '''
+    Unlinks the directory.
+    If we have symlink package removes dangling references.
+    Brings back any old files into home directory.
+    '''
     os.system("mv ~/.dotfiles ~/.dotfiles_unlinked")
     os.system("cd ~ && symlink -d ./")
     os.system("mv ~/old_files/* ~/")
 
 def link():
+    '''
+    Links the directory back.
+    Creates new links if old ones were removed
+    '''
     os.system("mv ~/.dotfiles_unlinked ~/.dotfiles")
     update()
 
@@ -168,6 +176,7 @@ def main():
         'unlink' : unlink,
         'link' : link
     }
+
     for fn in COMMANDS.values():
         fn.__doc__ = fn.__doc__.strip()
 
