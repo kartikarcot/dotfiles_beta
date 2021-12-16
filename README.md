@@ -1,51 +1,12 @@
 Dotfiles
 ========
 
-🏠 Personal dotfiles for \*NIX (Mac OS X and Linux) systems.
+Adapted from https://github.com/wookayin/dotfiles/
+
+🏠 Personal dotfiles.
 
 Installation
 ------------
-
-### 👉 One-liner (if you trust me):
-
-```bash
-curl -fsSL https://dotfiles.wook.kr/etc/install | bash
-```
-
-<details><summary>
-💡 (Tip) You only need to remember <code>curl dotfiles.wook.kr</code> (Click to expand)
-</summary></p>
-
-Every file is accessible through `dotfiles.wook.kr` (via `curl -L` or `wget`), e.g.,
-
-* https://dotfiles.wook.kr/vimrc
-* https://dotfiles.wook.kr/vimrc?raw=true
-* https://dotfiles.wook.kr/bin/tb
-
-<p></details>
-
-<details><summary>
-🤔 Want to manually clone and install? (Click to expand)
-</summary><p>
-
-```bash
-$ git clone --recursive https://github.com/wookayin/dotfiles.git ~/.dotfiles
-$ cd ~/.dotfiles && python install.py
-```
-
-<!--
-Note: The option `-j8` (`--jobs 8`) works with Git >= 2.8 (parallel submodule fetching).
-For older versions of Git, try without `-j` option.
--->
-
-</p></details>
-
-<br>
-
-
-The installation script will clone the repository into `~/.dotfiles` and create symbolic links (e.g., `~/.vimrc`) for you.
-If target files already exist (e.g. `~/.vim`, `~/.vimrc`), you will need to manually resolve the conflict (delete the old one or just ignore). See Troubleshooting below for details.
-
 
 `$ dotfiles`
 ------------
