@@ -184,7 +184,7 @@ post_actions += [
     if ! -f "$HOME/.dotfiles/ohmyzsh/oh-my-zsh.sh" > /dev/null; then
         echo -e "\033[0;31mError: oh-my-zsh not found. Please install oh-my-zsh.\033[0m";
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-        ZSH="$HOME/.dotfiles/zsh/ohmyzsh
+        ZSH="$HOME/.dotfiles/zsh/ohmyzsh"
 	    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
     if ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" > /dev/null; then
