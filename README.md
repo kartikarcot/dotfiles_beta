@@ -1,6 +1,8 @@
 Dotfiles
 ========
 
+Adapted from https://github.com/wookayin/dotfiles/
+
 🏠 Personal dotfiles.
 
 Installation
