@@ -1,22 +1,3 @@
-# .zshrc
-# ======
-# vim: set sts=2 sw=2 ts=2
-
-# To profile zsh startup, use the following:
-# In ~/.zshrc,
-#  (BEGIN) zmodload zsh/zprof
-#  (END)   zprof >! ~/.zsh.startup.log
-# % repeat 3 {time zsh -i -c exit}
-
-
-# Default prompt host color for pure theme and tmux statusbar.
-# You may want to have different color per machine (use ANSI color name or xterm color codes [0-255]).
-#   - https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
-# The PROMPT_HOST_COLOR variable can be inherited from a parent shell, tmux, or SSH session.
-if [[ -z "$PROMPT_HOST_COLOR" ]]; then
-  export PROMPT_HOST_COLOR="6"  # cyan
-fi
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -24,178 +5,139 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# autoload built-in zsh utilities.
-autoload -Uz is-at-least
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Path to your oh-my-zsh installation.
+export ZSH="/home/karthik/.oh-my-zsh"
 
-# zgen           {{{
-# ===================
-if [[ ! -s "${ZDOTDIR:-$HOME}/.zgen/zgen.zsh" ]]; then
-  echo -e "\033[0;31m zgen is not installed; please update dotfiles !"
-  echo -e "\033[0;33m  e.g. $ dotfiles update\n\
-       $ cd ~/.dotfiles && python install.py"
-  echo -e "\033[0m"
-  return
-fi
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
-source "${ZDOTDIR:-$HOME}/.zgen/zgen.zsh"
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
 
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
 
-# Source the Prezto configuration file.
-if [[ -s "${ZDOTDIR:-$HOME}/.zpreztorc" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zpreztorc"
-fi
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
 
-# Dirty hacks for Prezto+zplug
-# @see https://github.com/zplug/zplug/issues/373
-zstyle ":prezto:module:completion" loaded 'yes'
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
 
-# Do not put all usernames as possible candidates for tab completion.
-zstyle ':completion:*' users root $USER
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
 
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
 
-# virtualenvwrapper -- use lazy load (see prezto#669)
-if (( $+commands[virtualenvwrapper_lazy.sh] )); then
-    source "$commands[virtualenvwrapper_lazy.sh]"
-fi
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
 
-# nvm -- sourcing is very slow, use lazy load
-if [[ -f "$HOME/.nvm/nvm.sh" ]]; then
-  function nvm() {
-    unfunction nvm
-    source "$HOME/.nvm/nvm.sh"
-    nvm "$@"
-  }
-fi
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
 
-# Additional zplug from ~/.zshrc.local
-if [[ -s "${ZDOTDIR:-$HOME}/.zshrc.local" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zshrc.local"
-fi
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
 
-# Misc plugin configs {{{
-# -----------------------
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
 
-# fzf-marks
-export FZF_MARKS_JUMP='^g'
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# }}}
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
 
-# ------------------------------------------------------ }}}
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Cleanup obsolete zgen plugins (zgen reset doesn't ignore)
-if [[ -n "${DOTFILES_UPDATE}" ]]; then
-  rm -rf ~/.zgen/zdharma/fast-syntax-highlighting-master
-fi
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git vi-mode fzf-tab)
 
-# zgen plugin specifications
-# NOTE: To reflect the added/updated plugins, try 'zgen reset'
-if ! zgen saved; then
-  echo "Initializing zgen plugins ..."
+source $ZSH/oh-my-zsh.sh
 
-  # load prezto. see ~/.zpreztorc for plugin configurations
-  zgen prezto
+# User configuration
 
-  # additional modules/plugins
-  # --------------------------
+# export MANPATH="/usr/local/man:$MANPATH"
 
-  if is-at-least 5.4; then
-    # zsh theme: powerlevel10k + customization
-    # p10k's minimum zsh requirement is 5.1 but we require zsh 5.4+,
-    # because without the instant mode initialization is slower than pure.
-    zgen load romkatv/powerlevel10k 'powerlevel10k.zsh-theme'
-  else
-    # zsh theme: pure (forked ver). For OLD zsh.
-    zgen load mafredri/zsh-async
-    zgen load wookayin/pure
-  fi
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
 
-  # zsh syntax: FSH
-  # theme file (XDG:wook) is at ~/.config/fsh/wook.ini
-  # For some reason, @zdharma's repo is gone -- workaround by using its fork
-  zgen load wookayin/fast-syntax-highlighting
-  fast-theme "XDG:wook"
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
 
-  # More completion support
-  zgen load esc/conda-zsh-completion
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
 
-  # misc.
-  # #see ~/.zsh/zsh.d/envs.zsh for configs
-  zgen load wookayin/fzf-fasd
-
-  # fzf-marks
-  zgen load urbainvaes/fzf-marks
-
-  zgen load zsh-users/zsh-autosuggestions
-  if (( $+commands[virtualenvwrapper_lazy.sh] || $+commands[conda] )); then
-    # Use my own fork for a while, to support autoswitch into anaconda envs
-    zgen load wookayin/zsh-autoswitch-virtualenv
-  fi
-  if [[ "`uname`" == "Darwin" ]]; then
-    zgen load wookayin/anybar-zsh
-  fi
-
-  zgen save
-
-fi
-
-# }}} ===================
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Source after-{zplug,zgen} zsh script files.
-for config_file (${ZDOTDIR:-$HOME}/.zsh/zsh.d/*.zsh(N)) source $config_file
-
-# Terminal
-# Use xterm-256color (for tmux, too)
-if [[ $TERM != "xterm-kitty" ]]; then
-  export TERM="xterm-256color"
-fi
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.zsh/p10k.zsh ]] || source ~/.zsh/p10k.zsh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH=$PATH:$HOME/anaconda/bin
+export PATH=$PATH:/usr/local/opt/llvm/bin
+export PATH=$PATH:~/.local/bin
 
+alias graph='git log --all --decorate --oneline --graph'
+alias st='git status'
 
-# iTerm integration (for OS X iTerm2)
-# @see https://iterm2.com/shell_integration.html
-if [[ "`uname`" == "Darwin" ]] && [[ -f ${HOME}/.iterm2_shell_integration.zsh ]]; then
-    source ${HOME}/.iterm2_shell_integration.zsh
-fi
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-if (( $+commands[iterm-tab-color] )); then
-    # set tab color, if it is a new connection to remote through SSH
-    function iterm_tab_color_auto() {
-        if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ] && [ -n "$PROMPT_HOST_COLOR" ]; then
-            iterm-tab-color $PROMPT_HOST_COLOR
-        fi
-    }
-    iterm_tab_color_auto
-fi
+enable-fzf-tab
 
-# Anaconda3
-# see ~/.zshenv for $CONDA_EXE detection
-function _conda_initialize() {
-# >>> conda initialize >>>
-if [ -n "${CONDA_EXE}" ]; then
-  ${CONDA_EXE} config --set auto_activate_base false
-  __conda_setup="$(${CONDA_EXE} 'shell.zsh' 'hook' 2> /dev/null)"
-  if [ $? -eq 0 ]; then
-      eval "$__conda_setup"
-  fi
-  unset __conda_setup
-fi
-# <<< conda initialize <<<
-}
-# Note: conda initialize is slow (0.3 sec), so execute lazily
-conda() {
-  unfunction conda
-  _conda_initialize
-  conda "$@"
+function cdd() {
+    if [[ "$#" != 0 ]]; then
+        builtin cd "$@";
+        return
+    fi
+    while true; do
+        local lsd=$(echo ".." && ls -p | grep '/$' | sed 's;/$;;')
+        local dir="$(printf '%s\n' "${lsd[@]}" |
+            fzf --reverse --preview '
+                __cd_nxt="$(echo {})";
+                __cd_path="$(echo $(pwd)/${__cd_nxt} | sed "s;//;/;")";
+                echo $__cd_path;
+                echo;
+                ls -p -G "${__cd_path}";
+        ')"
+        [[ ${#dir} != 0 ]] || return 0
+        builtin cd "$dir" &> /dev/null
+    done
 }
 
-if [[ -z "$CONDA_EXE" && -d "/opt/homebrew/Caskroom/miniconda" ]]; then
-  echo "Warning: Please install miniconda locally on your HOME, not via Homebrew."
-  echo "$ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
-  echo "$ ./Miniconda3-latest-MacOSX-x86_64.sh -p $HOME/.miniconda3"
-fi
+source ~/.bash_aliases
+export NODEJS_HOME=/usr/local/lib/node/nodejs
+export PATH=$NODEJS_HOME/bin:$PATH

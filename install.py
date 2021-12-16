@@ -44,6 +44,9 @@ tasks = {
     '~/.zsh'      : 'zsh',
     '~/.zshrc'    : 'zsh/zshrc',
 
+    # Bash
+    '~/.bashrc'    : 'bash/bashrc',
+
     # Bins
     '~/.local/bin/dotfiles' : 'bin/dotfiles',
     '~/.local/bin/fzf' : '~/.fzf/bin/fzf', # fzf is at $HOME/.fzf
