@@ -47,6 +47,9 @@ tasks = {
     # Bash
     '~/.bashrc'    : 'bash/bashrc',
 
+    # fzf
+    '~/.fzf' : 'fzf',
+
     # Bins
     '~/.local/bin/dotfiles' : 'bin/dotfiles',
     '~/.local/bin/fzf' : '~/.fzf/bin/fzf', # fzf is at $HOME/.fzf
@@ -54,6 +57,7 @@ tasks = {
     # tmux
     '~/.tmux'      : 'tmux',
     '~/.tmux.conf' : 'tmux/tmux.conf',
+    
 }
 
 
@@ -100,14 +104,22 @@ post_actions += [
     bash "etc/install-neovim-py.sh"
 ''']
 
-vim = 'nvim' if find_executable('nvim') else 'vim'
-post_actions += [
-    # Run vim-plug installation
-    {'install' : '{vim} +PlugInstall +qall'.format(vim=vim),
-     'update'  : '{vim} +PlugUpdate  +qall'.format(vim=vim),
-     'none'    : '# {vim} +PlugUpdate (Skipped)'.format(vim=vim)
-     }['update' if not args.skip_vimplug else 'none']
-]
+if find_executable('vim'):
+    post_actions += [
+        # Run vim-plug installation
+        {'install' : '{vim} +PlugInstall +qall'.format(vim="vim"),
+         'update'  : '{vim} +PlugUpdate  +qall'.format(vim="vim"),
+         'none'    : '# {vim} +PlugUpdate (Skipped)'.format(vim="vim")
+         }['update' if not args.skip_vimplug else 'none']
+    ]
+if find_executable('nvim'):
+    post_actions += [
+        # Run vim-plug installation
+        {'install' : '{vim} +PlugInstall +qall'.format(vim="nvim"),
+         'update'  : '{vim} +PlugUpdate  +qall'.format(vim="nvim"),
+         'none'    : '# {vim} +PlugUpdate (Skipped)'.format(vim="nvim")
+         }['update' if not args.skip_vimplug else 'none']
+    ]
 
 post_actions += [
     # Install tmux plugins via tpm
@@ -123,7 +135,7 @@ post_actions += [
         echo -e "$(tmux -V) is too old. Contact system administrator, or:"
         echo -e "  $ dotfiles install tmux  \033[0m (installs to ~/.local/, if you don't have sudo)"
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-        ./bin/dotfiles install tmux
+        ~/.local/bin/dotfiles install tmux
     else
         echo "$(which tmux): $(tmux -V)"
     fi
@@ -153,7 +165,7 @@ post_actions += [
     if ! type "zsh" > /dev/null; then
         echo -e "\033[0;31mError: /bin/zsh not found. Please install zsh.\033[0m";
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-        ./bin/dotfiles install zsh
+        ~/.local/bin/dotfiles install zsh
     fi
     if [[ ! "$SHELL" = *zsh ]]; then
         echo -e '\033[0;33mPlease type your password if you wish to change the default shell to ZSH\e[m'
@@ -162,6 +174,17 @@ post_actions += [
         echo -e "\033[0;32m\$SHELL is already zsh.\033[0m $(zsh --version)"
     fi
 ''']
+
+post_actions += [
+    r'''#!/bin/bash
+    # Change default shell to zsh
+    if ! type "fzf" > /dev/null; then
+        echo -e "\033[0;31mError: fzf not found. Please install fzf.\033[0m";
+        read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+        ~/.fzf/install
+    fi
+''']
+
 
 ################# END OF FIXME #################
 
