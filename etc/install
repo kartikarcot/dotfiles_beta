@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Usage:
-# curl -fsSL https://dotfiles.wook.kr/etc/install | bash
 
 cat <<EOF
    @wookayin's              ███████╗██╗██╗     ███████╗███████╗
@@ -21,7 +19,7 @@ if _version_check "$(git --version | cut -d' ' -f3)" "2.8"; then
     GIT_FLAGS="-j8"
 fi
 
-GIT_REPO="https://github.com/wookayin/dotfiles.git"
+GIT_REPO="https://github.com/kartikarcot/dotfiles_beta.git"
 
 if which python3 > /dev/null; then
     PYTHON="python3"
