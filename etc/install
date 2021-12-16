@@ -34,7 +34,7 @@ set -e
 
 cd ~
 
-git clone --recursive ${GIT_FLAGS} ${GIT_REPO} ~/.dotfiles
+git clone --recurse-submodules ${GIT_FLAGS} ${GIT_REPO} ~/.dotfiles
 cd ~/.dotfiles && $PYTHON install.py
 
 echo "All Done!"

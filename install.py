@@ -308,6 +308,7 @@ for target, source in sorted(tasks.items()):
         mkdir_target = os.path.split(target)[0]
         makedirs(mkdir_target, exist_ok=True)
         log(GREEN('Created directory : %s' % mkdir_target))
+        print(source, target)
         os.symlink(source, target)
         log("{:50s} : {}".format(
             BLUE(target),
