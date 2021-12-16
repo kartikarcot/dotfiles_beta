@@ -314,6 +314,14 @@ for target, source in sorted(tasks.items()):
                     BLUE(target),
                     YELLOW("already exists but not a symbolic link; --force option ignored")
                 ))
+        elif os.path.exists(os.readlink(target)) and args.force:
+            log("{:50s} : {}".format(
+                    BLUE(target),
+                    YELLOW("already exists moving to ~/old_files folder")
+                ))
+            if not os.path.exists(os.environ('HOME')+"/old_files"):
+                makedirs(os.environ('HOME')+"/old_files", exist_ok=True)
+            os.system("mv {target} {dest}".format(target=target, dest=os.environ('HOME')+"/old_files"))
         else:
             log("{:50s} : {}".format(
                 BLUE(target),
