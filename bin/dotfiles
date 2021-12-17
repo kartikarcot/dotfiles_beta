@@ -157,8 +157,8 @@ def unlink():
     Brings back any old files into home directory.
     '''
     os.system("mv ~/.dotfiles ~/.dotfiles_unlinked")
-    os.system("cd ~ && symlink -d ./")
-    os.system("mv ~/old_files/* ~/")
+    os.system("cd ~ && symlinks -d ./")
+    os.system("mv ~/old_files/*\(D\) ~/")
 
 def link():
     '''
