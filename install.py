@@ -186,7 +186,7 @@ post_actions += [
         echo -e "\033[0;31mError: oh-my-zsh not found. Please install oh-my-zsh.\033[0m";
         read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
         ZSH="$HOME/.dotfiles/zsh/oh-my-zsh"
-	    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
     fi
     if [ ! -L "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
         echo "linking folders"
@@ -307,21 +307,26 @@ for target, source in sorted(tasks.items()):
         is_broken_link = os.path.islink(target) and not os.path.exists(os.readlink(target))
 
         if args.force or is_broken_link:
+            # The path is a link then unlink it
             if os.path.islink(target):
                 os.unlink(target)
             else:
-                log("{:50s} : {}".format(
-                    BLUE(target),
-                    YELLOW("already exists but not a symbolic link; --force option ignored")
-                ))
-        elif os.path.exists(os.readlink(target)) and args.force:
-            log("{:50s} : {}".format(
-                    BLUE(target),
-                    YELLOW("already exists moving to ~/old_files folder")
-                ))
-            if not os.path.exists(os.environ('HOME')+"/old_files"):
-                makedirs(os.environ('HOME')+"/old_files", exist_ok=True)
-            os.system("mv {target} {dest}".format(target=target, dest=os.environ('HOME')+"/old_files"))
+                # The path is an actual path to a file then move it
+                if os.path.exists(target) and args.force:
+                    log("{:50s} : {}".format(
+                            BLUE(target),
+                            YELLOW("already exists moving to ~/old_files folder")
+                        ))
+                    if not os.path.exists(os.environ['HOME']+"/old_files"):
+                        log("Creating folder: {folder}".format(folder=BLUE(os.environ['HOME']+"/old_files")))
+                        makedirs(os.environ['HOME']+"/old_files", exist_ok=True)
+                    log("Running command: {command}".format(command="mv {target} {dest}".format(target=target, dest=os.environ['HOME']+"/old_files")))
+                    os.system("mv {target} {dest}".format(target=target, dest=os.environ['HOME']+"/old_files"))
+                else: # This should never happen 
+                    log("{:50s} : {}".format(
+                        BLUE(target),
+                        YELLOW("already exists but not a symbolic link; --force option ignored")
+                        ))
         else:
             log("{:50s} : {}".format(
                 BLUE(target),

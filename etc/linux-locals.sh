@@ -97,7 +97,7 @@ install_zsh() {
     set -e
 
     ZSH_VER="5.4.1"
-    TMP_ZSH_DIR="/tmp/$USER/zsh/"; mkdir -p $TMP_ZSH_DIR
+    TMP_ZSH_DIR="/tmp/$USER/zsh"; mkdir -p $TMP_ZSH_DIR
 
     wget -nc -O $TMP_ZSH_DIR/zsh.tar.gz "https://sourceforge.net/projects/zsh/files/zsh/${ZSH_VER}/zsh-${ZSH_VER}.tar.gz/download"
     tar -xvzf $TMP_ZSH_DIR/zsh.tar.gz -C $TMP_ZSH_DIR --strip-components 1
